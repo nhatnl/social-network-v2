@@ -15,6 +15,8 @@ from custom_user.permission import IsOwner
 class CreatePost(CreateAPIView):
     serializer_class = CreatePostSerializer
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
 
 class PostViewSet(ModelViewSet):
     lookup_url_kwarg = 'post_id'

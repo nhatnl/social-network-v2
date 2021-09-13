@@ -4,18 +4,18 @@ from rest_framework.fields import CurrentUserDefault
 
 from .models import Post
 from comment.api.models import Comment
-from custom_user.serializer import LikeUserSerializer
+from custom_user.serializer import LikeUserSerializer, UserSerializer
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ['content', 'mode']
+        fields = ['content', 'mode', 'id']
 
-    def create(self, validated_data):
-        validated_data['user'] = self.context['request'].user
-        return super().create(validated_data)
+    # def create(self, validated_data):
+    #     validated_data['user'] = self.context['request'].user
+    #     return super().create(validated_data)
 
 
 class UpDelPostSerializer(serializers.ModelSerializer):
@@ -29,6 +29,7 @@ class DetailPostSerializer(serializers.ModelSerializer):
     count_like = serializers.SerializerMethodField()
     count_comment = serializers.SerializerMethodField()
     is_liked = serializers.SerializerMethodField()
+    user = UserSerializer()
 
     def get_count_like(self, obj: Post):
         return obj.like.all().count()

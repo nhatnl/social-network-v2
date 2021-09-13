@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from django.contrib.auth import password_validation
 
 from rest_framework import serializers
-from rest_auth.serializers import PasswordResetConfirmSerializer
+from rest_auth.serializers import PasswordResetConfirmSerializer, LoginSerializer
 
 from custom_user.models import CustomUser
 

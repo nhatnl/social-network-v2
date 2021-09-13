@@ -32,13 +32,15 @@ class CommentSerializer(serializers.Serializer):
     level = serializers.HiddenField(default=1)
 
     def validate_parent(self, parent):
-        post_id = self.context['view'].kwargs['post_id']
-        post = Post.objects.get(id=post_id)
-        if parent.post == post:
-            return parent
-        else:
-            raise serializers.ValidationError(
-                _('Parent Validation Error: Comment not in current Post'))
+        if parent is not None:
+            post_id = self.context['view'].kwargs['post_id']
+            post = Post.objects.get(id=post_id)
+            if parent.post == post:
+                return parent
+            else:
+                raise serializers.ValidationError(
+                    _('Parent Validation Error: Comment not in current Post'))
+        return parent
 
     def set_level(self, validated_data):
         parent = validated_data.get('parent', None)
@@ -57,3 +59,6 @@ class CommentSerializer(serializers.Serializer):
         instance.level = self.set_level(validated_data)
         instance.save()
         return instance
+
+
+
